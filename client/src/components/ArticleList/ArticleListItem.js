@@ -15,7 +15,7 @@ export const ArticleListItem = props => (
         {props.article.article}<br />
         </div>
         <div className="col-lg-2"> 
-        <FormBtn  onClick={props.onBtnClick} data-article-id={props.key} id={props.key}>{props.btnName}</FormBtn></div>
+        <FormBtn  onClick={props.onBtnClick} data={props.key} >{props.btnName}</FormBtn></div>
       </div>
       {/* <Row>
         <p>
