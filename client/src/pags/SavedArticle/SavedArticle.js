@@ -1,14 +1,21 @@
 import  React, { Component } from 'react';
-import Jumbotron from '../../components/Jumbotron/Jumbotron'
+import Jumbotron from '../../components/Jumbotron/Jumbotron';
+import { Col, Row, Container } from "../../components/Grid";
 class SavedArticles extends Component {
+    state={
+        articles:[]
+    }
     render() {
         return (
-            <div>
-                <Jumbotron>
-                    <h1>SAVED NEW YORK TIMES TODAY </h1>
-                </Jumbotron>
-
-            </div>
+            <Container fluid>
+                    <Row>
+                        <Col size="md-1" />
+                        <Col size="md-10">
+                            <Jumbotron   />
+                    
+              </Col>
+               </Row>
+            </Container>
         );
     }
 }
