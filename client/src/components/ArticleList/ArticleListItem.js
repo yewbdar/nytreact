@@ -14,7 +14,8 @@ export const ArticleListItem = props => (
         {props.article.href}<br />
         {props.article.article}<br />
         </div>
-        <div className="col-lg-2"> <FormBtn onClick={props.onSaveClick} data-article-id={props.key} id={props.key}>{props.btnName}</FormBtn></div>
+        <div className="col-lg-2"> 
+        <FormBtn  onClick={props.onBtnClick} data-article-id={props.key} id={props.key}>{props.btnName}</FormBtn></div>
       </div>
       {/* <Row>
         <p>
