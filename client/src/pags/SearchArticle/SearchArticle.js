@@ -30,9 +30,17 @@ class SearchArticle extends Component {
         startDate: "",
         endDate: ""
     };
-    onSaveClick(event){
-        let clickedArticle =  event.target;
-        console.log("article save clicked" + clickedArticle);
+    handleInputChange = (event)=> {
+        const {name , value} = event.target
+        
+        this.setState({
+            [name]:value
+            
+        });
+        console.log("article save clicked" ,name , value);
+    }
+    handleFormSearch = (event) => {
+        
     }
 
     render() {
@@ -73,17 +81,14 @@ class SearchArticle extends Component {
                                     name="endYear"
 
                                 />
-                                <FormBtn
-                                    disabled={!(this.state.author && this.state.title)}
-                                    onClick={this.handleFormSubmit}
-                                >
-                                    Add Article
+                                
+                                <FormBtn onClick={this.handleFormSearch}>
+                                    Search
                                 </FormBtn>
+                                
                             </form>
                         </Col>
                     </Row>
-
-
                     <Row>
                     <Col size="md-1" />
                         <Col size="md-10">
@@ -96,7 +101,7 @@ class SearchArticle extends Component {
                                                 <ArticleListItem
                                                     article={article}
                                                     btnName="Save"
-                                                    onSaveClick={this.onSaveClick}
+                                                    onBtnClick={this.onSaveClick}
                                                 />
                                             );
                                         })}
