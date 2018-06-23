@@ -4,29 +4,19 @@ import { Container, Row, Col } from "../Grid";
 import  {FormBtn}  from "../Form";
 
 
-export const ArticleListItem = props => (
+export const ArticleListItem = (props) => (
   <li className="list-group-item">
     <Container>
- 
-      <div className="row">
+      <div className="row" key={props.article.articleId}>
         <div className="col-lg-10">
-        {props.article.title}<br />
-        {props.article.href}<br />
+        <a href={props.article.url}><h1>{props.article.headline}</h1></a><br/>
+        <h3>{props.article.snippet}</h3><br />
         {props.article.article}<br />
         </div>
         <div className="col-lg-2"> 
-        <FormBtn  onClick={props.onBtnClick} data={props.key} >{props.btnName}</FormBtn></div>
+        <FormBtn  onClick={props.onBtnClick} data-article-id={props.article.articleId} >{props.btnName}</FormBtn></div>
       </div>
-      {/* <Row>
-        <p>
-          <h3><a rel="noreferrer noopener" target="_blank" href={props.href}>
-         
-          </a></h3></p>
-          <p>article: {props.article}</p>
-          <Col size="md-5"/>
-         
-          
-      </Row> */}
+      
     </Container>
   </li>
 );

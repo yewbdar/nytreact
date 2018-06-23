@@ -2,10 +2,10 @@ import  React, { Component } from 'react';
 import Jumbotron from '../../components/Jumbotron/Jumbotron';
 import { Col, Row, Container } from "../../components/Grid";
 import { ArticleList, ArticleListItem } from "../../components/ArticleList";
-
+import API from '../../utils/API';
 class SavedArticles extends Component {
     state = {
-        articles: [{
+        savedArticles: [{
             key:"article.title",
             title:"article.title",
             href:"article.href",
@@ -24,8 +24,31 @@ class SavedArticles extends Component {
             article:"article.article"
         }]}
         onRemoveClick(event){
-            let clickedArticle =  event.target;
-            console.log("article remove clicked" + clickedArticle);
+            event.preventDefault();
+        let id = event.target.getAttribute("data-article-id");
+        API.deleteArticle(id)
+        .then((results) => this.setState({savedArticles:results}))
+       //  .then((results)=>{
+        //      console.log(results);
+        //  })
+        .catch((err) => console.log(err));
+        
+        }
+        componentDidMount(){
+            this.loadeData();
+        }
+    //   componentDidUpdate(){
+    //     this.loadeData();
+    //   }
+        loadeData =()=>{
+            console.log("loade data must loade")
+          API.getSavedArticle()
+        //   .then((results) => this.setState({savedArticles:results}))
+         .then((results)=>{
+             console.log(results);
+             console.log("get saved");
+         })
+        .catch((err) => console.log(err))
         }
     render() {
         return (
@@ -35,13 +58,12 @@ class SavedArticles extends Component {
                         <Col size="md-10">
                             <Jumbotron   />
                             <Row>
-                    
                         <Col size="md-12">
-                            {!this.state.articles.length ? (
+                            {!this.state.savedArticles.length ? (
                                 <h1 className="text-center">No Article to Display</h1>
                             ) : (
                                     <ArticleList>
-                                        {this.state.articles.map(article => {
+                                        {this.state.savedArticles.map(article => {
                                             return (
                                                 <ArticleListItem
                                                     article={article}
