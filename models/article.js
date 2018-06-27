@@ -6,6 +6,7 @@ const articleSchema = new Schema({
   title: { type: String, required: true },
   date: { type: Date, required: true },
   url: { type: String, required: true },
+  snippet: { type: String },
   
 });
 

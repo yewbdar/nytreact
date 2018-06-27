@@ -5,34 +5,18 @@ import { ArticleList, ArticleListItem } from "../../components/ArticleList";
 import API from '../../utils/API';
 class SavedArticles extends Component {
     state = {
-        savedArticles: [{
-            key:"article.title",
-            title:"article.title",
-            href:"article.href",
-            article:"article.article"
-        },
-        {
-            key:"article.title",
-            title:"article.title",
-            href:"article.href",
-            article:"article.article"
-        },
-        {
-            key:"article.title",
-            title:"article.title",
-            href:"article.href",
-            article:"article.article"
-        }]}
-        onRemoveClick(event){
+        savedArticles: []
+    }
+        onRemoveClick=(event)=>{
             event.preventDefault();
         let id = event.target.getAttribute("data-article-id");
-        API.deleteArticle(id)
-        .then((results) => this.setState({savedArticles:results}))
-       //  .then((results)=>{
-        //      console.log(results);
-        //  })
-        .catch((err) => console.log(err));
         
+        API.deleteArticle(id)
+        .then((results) => {
+            console.log(results);
+            document.getElementById(id).remove();
+            // this.setState({savedArticles:results.data})
+        }).catch((err) => {console.log(err)});
         }
         componentDidMount(){
             this.loadeData();
@@ -43,11 +27,12 @@ class SavedArticles extends Component {
         loadeData =()=>{
             console.log("loade data must loade")
           API.getSavedArticle()
-        //   .then((results) => this.setState({savedArticles:results}))
-         .then((results)=>{
-             console.log(results);
-             console.log("get saved");
-         })
+          .then((results) => this.setState({savedArticles:results.data}))
+        
+        //    .then((results)=>{
+        //      console.log(results.data);
+        //      console.log("get saved");
+        //  })
         .catch((err) => console.log(err))
         }
     render() {
@@ -60,9 +45,12 @@ class SavedArticles extends Component {
                             <Row>
                         <Col size="md-12">
                             {!this.state.savedArticles.length ? (
+                                
                                 <h1 className="text-center">No Article to Display</h1>
                             ) : (
+                                
                                     <ArticleList>
+                                    <div>
                                         {this.state.savedArticles.map(article => {
                                             return (
                                                 <ArticleListItem
@@ -72,7 +60,8 @@ class SavedArticles extends Component {
                                                 />
                                             );
                                         })}
-                                    </ArticleList>
+                                        </div>
+                                     </ArticleList>
                                 )}
                         </Col>
                     </Row>

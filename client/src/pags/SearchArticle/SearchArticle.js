@@ -7,54 +7,64 @@ import { ArticleList, ArticleListItem } from "../../components/ArticleList";
 import API from '../../utils/API';
 class SearchArticle extends Component {
     state = {
-        articles:[],
-        dataForSave:{},
+        articles: [],
+        dataForSave: {},
         serchTerm: "",
         NumOfRecords: "5",
         startDate: "",
-        endDate: ""
+        endDate: "",
+        info:"No Article to Display"
     };
-    handleInputChange = (event)=> {
-        const {name , value} = event.target
+    handleInputChange = (event) => {
+        const { name, value } = event.target
         this.setState({
-            [name]:value
+            [name]: value
         });
-        console.log("article save clicked" ,name , value);
+        console.log("article save clicked", name, value);
     };
-    searchGiphy = query => {
-        API.search(query)
-          .then(res => this.setState({ results: res.data.data }))
-          .catch(err => console.log(err));
-      };
+
     handleFormSearch = (event) => {
         console.log(this.state.serchTerm);
         event.preventDefault();
-        API.getArticle(this.state.serchTerm)
-          .then((results) => this.setState({articles:results.data}))
-        //  .then((results)=>{
-        //      console.log(results.data);
-        //  })
-        .catch(err => console.log(err))
-        // console.log(this.state.serchTerm);
+        if (this.state.serchTerm !== "") {
+            API.getArticle(this.state.serchTerm)
+                .then((results) => this.setState({ articles: results.data }))
+                //  .then((results)=>{
+                //      console.log(results.data);
+                //  })
+                .catch(err => console.log(err))
+            // console.log(this.state.serchTerm);
+        }
+        else{
+            this.setState({ info:"plaese insert Serch term ",articles:[]})
+        }
     }
-    handleFormSave = (event) =>{
+    handleFormSave = (event) => {
         event.preventDefault();
         let id = event.target.getAttribute("data-article-id");
         // console.log(this.state.articles, id);
         let selectedArticle = this.state.articles.filter(function (item) {
+
             return item.articleId === id;
+
         })[0];
+        console.log(selectedArticle, id)
         this.setState(
-                          (prevState)=>({...prevState,
-                                dataForSave:{
-                                                articleId:selectedArticle.articleId,
-                                                title:selectedArticle.headline,
-                                                date:selectedArticle.date,
-                                                url:selectedArticle.url
-                                            }
-                                }),
-                                ()=>{ API.SaveArticle(this.state.dataForSave)}
-                    );
+            (prevState) => ({
+                ...prevState,
+                dataForSave: {
+                    articleId: selectedArticle.articleId,
+                    title: selectedArticle.title,
+                    date: selectedArticle.date,
+                    url: selectedArticle.url,
+                    snippet: selectedArticle.snippet
+                }
+            }),
+            () => {
+                API.SaveArticle(this.state.dataForSave)
+                document.getElementById(id).parentElement.remove();
+            }
+        );
     }
     render() {
         return (
@@ -70,6 +80,7 @@ class SearchArticle extends Component {
                                     value={this.state.serchTerm}
                                     onChange={this.handleInputChange}
                                     name="serchTerm"
+                                    required
                                 />
                                 <Lable value="Number of Records to Retrive :" />
                                 <Input
@@ -88,7 +99,7 @@ class SearchArticle extends Component {
                                     value={this.state.endDate}
                                     onChange={this.handleInputChange}
                                     name="endDate"
-                                />
+                                /><br />
                                 <FormBtn onClick={this.handleFormSearch}>
                                     Search
                                 </FormBtn>
@@ -96,13 +107,13 @@ class SearchArticle extends Component {
                         </Col>
                     </Row>
                     <Row>
-                    <Col size="md-1" />
+                        <Col size="md-1" />
                         <Col size="md-10">
                             {!this.state.articles.length ? (
-                                <h1 className="text-center">No Article to Display</h1>
-                            ) : (
+                                <h1 className="text-center">{this.state.info}</h1>
+                            ) : (  
                                     <ArticleList>
-                                        {this.state.articles.map(article => {
+                                        {this.state.articles.slice(0,this.state.NumOfRecords).map(article => {
                                             return (
                                                 <ArticleListItem
                                                     article={article}

@@ -1,6 +1,6 @@
 import  React from 'react';
 import {Link } from 'react-router-dom'
-import {Col} from '../Grid'
+// import {Col} from '../Grid'
 var style={
     color:"white"
     

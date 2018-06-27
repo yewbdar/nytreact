@@ -25,11 +25,26 @@ module.exports = {
             return res.status(422).json(err)});
       },
       remove: function(req, res) {
+          
         db.Article
-          .findById({ _id: req.params.id })
+          .findById({articleId: req.params.id })
           .then(dbModel => dbModel.remove())
           .then(dbModel => res.json(dbModel))
           .catch(err => res.status(422).json(err));
-      }
+      },
+
+      deleteArticleById : (req, res) => {
+        console.log("DB remove");
+        //  console.log(req.params.id);
+        db.Article.remove({articleId : req.params.id})
+        .then(() => {
+            res.status(200).json({data : "okay"})
+        })
+        .catch((err) => {
+            console.log("error while deleting an article")
+            console.log(err)
+            res.status(400).json({err : "something went wrong"})
+        })
+    }
 
 }
